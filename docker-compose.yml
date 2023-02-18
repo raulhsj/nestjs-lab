@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  mongo:
+    container_name: mongo-nestjs-lab
+    image: mongo:latest
+    restart: unless-stopped
+    environment:
+      MONGODB_DATABASE: demo
+    ports:
+      - '27017:27017'
+    volumes: 
+      - ./data:/data/db
+    networks:
+      - MONGO
+  
+  mongo-express:
+    container_name: mongo-express-nestjs-lab
+    image: mongo-express
+    restart: unless-stopped
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo-nestjs-lab
+    ports:
+      - '8081:8081'
+    networks:
+      - MONGO
+    depends_on:
+      - mongo
+
+networks:
+  MONGO:
